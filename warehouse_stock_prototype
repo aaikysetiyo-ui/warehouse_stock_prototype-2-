@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Warehouse Stock — Prototype v0.7</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+:root{--bg:#f4f7fb;--panel:#fff;--ink:#182230;--muted:#6b7788;--line:#e5eaf1;--nav:#142438;--accent:#1769e0;--green:#16845b;--red:#c33d4b;--amber:#b7791f}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.sidebar{background:var(--nav);color:#d9e4f1;padding:22px 14px}.brand{font-size:18px;font-weight:800;color:#fff;padding:8px 12px 24px;display:flex;gap:10px;align-items:center}.brand-icon{display:grid;place-items:center;background:#1c75ee;color:white;width:34px;height:34px;border-radius:10px}.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:1.4px;color:#8fa2b9;padding:12px}.nav button{width:100%;border:0;background:transparent;color:#c8d5e5;text-align:left;padding:12px;border-radius:9px;cursor:pointer;margin:2px 0;font-size:13px}.nav button.active,.nav button:hover{background:#233b56;color:#fff}.nav button span{display:inline-block;width:27px;color:#8eabc9}.sidebar-foot{font-size:11px;color:#91a4ba;padding:20px 12px}.main{min-width:0}.topbar{height:70px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;gap:15px}.crumb{color:var(--muted);font-size:12px}.topright{display:flex;align-items:center;gap:12px}.avatar{width:34px;height:34px;border-radius:50%;background:#dbeafe;color:#174ea6;display:grid;place-items:center;font-weight:800}.user-select{border:1px solid var(--line);border-radius:8px;padding:8px;background:#fff;color:var(--ink)}.content{padding:28px 30px;max-width:1500px;margin:auto}.pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:22px}.eyebrow{color:var(--accent);font-size:11px;text-transform:uppercase;font-weight:800;letter-spacing:1.3px}.pagehead h1{font-size:26px;letter-spacing:-.7px;margin:5px 0}.sub{color:var(--muted);margin:0}.btn{border:1px solid var(--line);border-radius:8px;padding:9px 13px;background:white;color:var(--ink);font-weight:650;cursor:pointer}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.btn.danger{color:var(--red)}.btn.small{padding:6px 9px;font-size:12px}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}.stat,.panel{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:18px}.stat-top{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.stat-icon{width:32px;height:32px;border-radius:9px;background:#eef5ff;color:var(--accent);display:grid;place-items:center}.stat-num{font-size:27px;font-weight:800;letter-spacing:-.8px;margin:10px 0 2px}.stat-note{font-size:11px;color:var(--muted)}.layout2{display:grid;grid-template-columns:1.45fr 1fr;gap:16px}.panel{margin-bottom:16px}.panelhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}.panelhead h3{font-size:15px;margin:0}.panelhead p{font-size:12px;color:var(--muted);margin:3px 0 0}.pill{display:inline-flex;padding:4px 8px;border-radius:20px;font-size:11px;font-weight:700;background:#edf2f7;color:#516173}.pill.green{background:#e6f7ef;color:var(--green)}.pill.red{background:#ffedf0;color:var(--red)}.pill.amber{background:#fff4dd;color:var(--amber)}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;font-size:11px;color:var(--muted);font-weight:700;background:#f8fafc;padding:11px 12px;border-bottom:1px solid var(--line)}td{padding:12px;border-bottom:1px solid #edf0f5;font-size:12px}tbody tr:last-child td{border-bottom:0}.sku{font-weight:800;color:#245ca6}.muted{color:var(--muted)}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}.search{border:1px solid var(--line);border-radius:8px;padding:9px 11px;min-width:220px;background:#fff}.field{display:flex;flex-direction:column;gap:5px;margin-bottom:13px}.field label{font-size:12px;color:#526174;font-weight:700}.field input,.field select,.field textarea{border:1px solid #dbe2eb;border-radius:8px;padding:10px;font:inherit;width:100%;background:#fff}.field textarea{min-height:70px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 13px}.span2{grid-column:1/-1}.empty{text-align:center;padding:30px;color:var(--muted)}.uploadbox{border:1.5px dashed #b8c8dc;background:#f8fbff;border-radius:12px;padding:28px;text-align:center}.uploadbox input{margin:12px auto;max-width:100%}.note{background:#fff8e8;border:1px solid #f4dfac;color:#78561a;padding:12px;border-radius:9px;font-size:12px;margin:12px 0}.success{background:#e9f8f0;color:#176844;border:1px solid #c8ebd8;padding:10px;border-radius:8px;margin:10px 0;font-size:12px}.tabs{display:flex;gap:5px;border-bottom:1px solid var(--line);margin-bottom:14px}.tabs button{border:0;background:transparent;padding:10px 12px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}.tabs button.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:800}.hidden{display:none!important}.diffpos{color:var(--green);font-weight:800}.diffneg{color:var(--red);font-weight:800}.footnote{font-size:11px;color:var(--muted);margin-top:10px}.activity{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid #edf0f5}.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:6px;flex-shrink:0}.activity strong{font-size:12px}.activity p{margin:2px 0;color:var(--muted);font-size:11px}.toast{position:fixed;bottom:20px;right:20px;background:#142438;color:white;padding:12px 16px;border-radius:9px;box-shadow:0 8px 30px #0002;z-index:10}.modalback{position:fixed;inset:0;background:#12203388;display:grid;place-items:center;padding:20px;z-index:20}.modal{background:white;border-radius:14px;padding:22px;width:min(560px,100%);max-height:90vh;overflow:auto}.modal h2{font-size:18px;margin:0 0 18px}.modalactions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.footer{font-size:11px;color:var(--muted);text-align:center;padding:15px}.tag{font-size:11px;background:#eaf2ff;color:#235db4;padding:5px 8px;border-radius:6px}@media(max-width:1000px){.app{grid-template-columns:1fr}.sidebar{padding:12px}.brand{padding:4px 8px 12px}.nav{display:flex;overflow:auto}.nav-label,.sidebar-foot{display:none}.nav button{white-space:nowrap;width:auto}.topbar{padding:0 18px}.content{padding:20px 16px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.layout2{grid-template-columns:1fr}}@media(max-width:560px){.cards{grid-template-columns:1fr 1fr;gap:8px}.stat{padding:12px}.stat-num{font-size:22px}.pagehead{display:block}.pagehead .btn{margin-top:12px}.formgrid{grid-template-columns:1fr}.span2{grid-column:auto}.topbar{height:auto;padding:12px;align-items:flex-start}.topright{gap:6px}.user-select{max-width:135px}.content{padding:16px 10px}}
+</style></head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-icon">▦</div><div>Warehouse<span style="color:#7eafff">Stock</span></div></div>
+    <div class="nav-label">Workspace</div>
+    <nav class="nav" id="nav">
+      <button class="active" data-page="dashboard"><span>▦</span>Dashboard</button>
+      <button data-page="items"><span>▤</span>Master Barang</button>
+      <button data-page="import"><span>⇧</span>Import Excel</button>
+      <button data-page="opname"><span>☷</span>Stok Opname</button>
+      <button data-page="reports"><span>▥</span>Laporan & Riwayat</button>
+      <button data-page="findings"><span>⚑</span>Temuan</button>
+    </nav>
+    <div class="sidebar-foot">PROTOTIPE v0.7<br>Data awal kosong · simulasi browser.</div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <div class="crumb">Warehouse / <strong id="crumb">Dashboard</strong></div>
+        <div style="font-weight:750;margin-top:3px">Stock Control Center</div>
+      </div>
+      <div class="topright">
+        <span class="muted" style="font-size:12px">Pengguna aktif</span>
+        <select class="user-select" id="userSelect"><option>Pengguna 1</option><option>Pengguna 2</option></select>
+        <div class="avatar" id="avatar">R</div>
+      </div>
+    </header>
+    <div class="content">
+      <section id="page-dashboard" class="page">
+        <div class="pagehead">
+          <div><div class="eyebrow">Ringkasan operasional</div><h1>Dashboard</h1><p class="sub">Pantau kondisi stok warehouse hari ini.</p></div>
+          <button class="btn primary" onclick="showPage('opname')">＋ Mulai stok opname</button>
+        </div>
+        <div class="cards" id="stats"></div>
+        <div class="layout2">
+          <div class="panel">
+            <div class="panelhead">
+              <div><h3>Stok terbaru</h3><p>Ringkasan barang berdasarkan stok sistem</p></div>
+              <button class="btn small" onclick="showPage('items')">Lihat semua →</button>
+            </div>
+            <div class="tablewrap">
+              <table>
+                <thead><tr><th>SKU / BARANG</th><th>LOKASI</th><th>STOK</th><th>STATUS</th></tr></thead>
+                <tbody id="dashItems"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panelhead">
+              <div><h3>Aktivitas terbaru</h3><p>Perubahan data yang tercatat</p></div>
+              <span class="pill">Audit log</span>
+            </div>
+            <div id="dashActivity"></div>
+          </div>
+        </div>
+        <div class="note">ℹ️ Data awal kosong. Prototipe menyimpan data hanya di browser ini. Untuk akses internet bersama oleh dua pengguna, versi produksi memerlukan database online dan autentikasi server.</div>
+      </section>
+      
+      <section id="page-items" class="page hidden">
+        <div class="pagehead">
+          <div><div class="eyebrow">Data referensi</div><h1>Master Barang</h1><p class="sub">Kelola SKU, satuan, lokasi, dan saldo stok sistem.</p></div>
+          <button class="btn primary" onclick="openItemModal()">＋ Tambah barang</button>
+        </div>
+        <div class="panel">
+          <div class="toolbar">
+            <input class="search" id="itemSearch" placeholder="Cari SKU atau nama barang…" oninput="renderItems()">
+            <button class="btn" onclick="downloadCSV()">⇩ Export CSV</button>
+            <button class="btn danger" onclick="deleteAllItems()">Hapus semua</button>
+            <button class="btn" onclick="showPage('import')">Import Excel</button>
+          </div>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>SKU</th><th>NAMA BARANG</th><th>LOKASI</th><th>SATUAN</th><th>STOK SISTEM</th><th>AKSI</th></tr></thead>
+              <tbody id="itemsBody"></tbody>
+            </table>
+          </div>
+          <div class="footnote" id="itemsCount"></div>
+        </div>
+      </section>
+
+      <section id="page-import" class="page hidden">
+        <div class="pagehead">
+          <div><div class="eyebrow">Migrasi data</div><h1>Import Data Excel</h1><p class="sub">Masukkan master barang dan saldo stok awal dari sistem lama.</p></div>
+          <button class="btn" onclick="downloadTemplate()">⇩ Download template CSV</button>
+        </div>
+        <div class="layout2">
+          <div class="panel">
+            <div class="panelhead">
+              <div><h3>Upload file</h3><p>Format .xlsx, .xls, atau .csv</p></div>
+              <span class="tag">Stok awal</span>
+            </div>
+            <div class="uploadbox">
+              <div style="font-size:28px">⇧</div>
+              <strong>Pilih file Excel/CSV</strong>
+              <p class="muted">Kolom yang dikenali: SKU, Nama Barang, Lokasi, Satuan, Stok Awal</p>
+              <input id="importFile" type="file" accept=".xlsx,.xls,.csv">
+              <div class="footnote">File diproses di browser prototipe ini.</div>
+            </div>
+            <div class="field" style="margin-top:14px">
+              <label>Mode import</label>
+              <select id="importMode">
+                <option value="skip">Tambah barang baru saja (aman)</option>
+                <option value="replace">Perbarui data barang yang cocok termasuk stok (gunakan hati-hati)</option>
+              </select>
+            </div>
+            <div class="note">Barang yang SKU-nya sudah ada akan dilewati dalam mode aman. Mode pembaruan dapat mengubah saldo stok langsung dan sebaiknya hanya digunakan untuk setup awal.</div>
+            <button class="btn primary" id="processImport" disabled onclick="commitImport()">Validasi & import data</button>
+            <div id="importMessage"></div>
+          </div>
+          <div class="panel">
+            <div class="panelhead">
+              <div><h3>Format kolom yang disarankan</h3><p>Unduh template untuk menghindari kesalahan pemetaan.</p></div>
+            </div>
+            <div class="tablewrap">
+              <table>
+                <thead><tr><th>Kolom</th><th>Contoh</th><th>Wajib?</th></tr></thead>
+                <tbody>
+                  <tr><td>SKU</td><td>BRG001</td><td><span class="pill green">Ya</span></td></tr>
+                  <tr><td>Nama Barang</td><td>Baut M8</td><td><span class="pill green">Ya</span></td></tr>
+                  <tr><td>Lokasi</td><td>Rak A01</td><td><span class="pill">Tidak</span></td></tr>
+                  <tr><td>Satuan</td><td>PCS</td><td><span class="pill">Tidak</span></td></tr>
+                  <tr><td>Stok Awal</td><td>100</td><td><span class="pill green">Ya</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="previewArea" style="margin-top:16px"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-opname" class="page hidden">
+        <div class="pagehead">
+          <div><div class="eyebrow">Stock verification</div><h1>Stok Opname</h1><p class="sub">Catat jumlah fisik, bandingkan selisih, lalu setujui penyesuaian.</p></div>
+          <div><button class="btn" onclick="exportOpname()">⇩ Export hasil opname</button> <button class="btn danger" onclick="deleteAllOpnames()">Hapus semua</button> <button class="btn primary" onclick="startOpname()">＋ Sesi opname baru</button></div>
+        </div>
+        <div class="cards" id="opStats"></div>
+        <div class="panel">
+          <div class="panelhead">
+            <div><h3>Daftar penghitungan</h3><p>Selisih tidak mengubah stok sistem sampai disetujui.</p></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+              <input class="search" id="opSearch" placeholder="Cari SKU/kode barang, nama, lokasi atau ID opname…" oninput="renderOpname()" style="min-width:280px">
+              <select class="user-select" id="opFilter" onchange="renderOpname()">
+                <option value="all">Semua status</option>
+                <option value="draft">Draft</option>
+                <option value="pending">Menunggu persetujuan</option>
+                <option value="approved">Disetujui</option>
+              </select>
+              <select class="user-select" id="opGroupFilter" onchange="renderOpname()">
+                <option value="all">Semua area</option>
+                <option value="Overhoul">Overhoul</option>
+                <option value="GD 1">GD 1</option>
+                <option value="GD 2">GD 2</option>
+                <option value="GD 3">GD 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>TANGGAL / SESI</th><th>SKU / BARANG</th><th>LOKASI</th><th>SISTEM</th><th>FISIK</th><th>SELISIH</th><th>STATUS</th><th>CATATAN</th><th>AKSI</th></tr></thead>
+              <tbody id="opBody"></tbody>
+            </table>
+          </div>
+          <div class="footnote">Persetujuan dicatat berdasarkan pengguna aktif. Untuk penggunaan produksi, identitas pengguna harus diverifikasi oleh server.</div>
+        </div>
+      </section>
+
+      <section id="page-reports" class="page hidden">
+        <div class="pagehead">
+          <div><div class="eyebrow">Kontrol & audit</div><h1>Laporan & Riwayat</h1><p class="sub">Telusuri perubahan saldo, import, dan persetujuan opname.</p></div>
+          <button class="btn" onclick="downloadLogs()">⇩ Export riwayat CSV</button>
+        </div>
+        <div class="panel">
+          <div class="toolbar"><input class="search" id="logSearch" placeholder="Cari aktivitas, pengguna, SKU…" oninput="renderLogs()"></div>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>WAKTU</th><th>AKTIVITAS</th><th>DETAIL</th><th>PENGGUNA</th></tr></thead>
+              <tbody id="logsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-findings" class="page hidden">
+        <div class="pagehead">
+          <div><div class="eyebrow">Barang di luar stok</div><h1>Temuan</h1><p class="sub">Simpan barang yang ditemukan di warehouse tetapi belum tercatat di stok sistem.</p></div>
+          <div><button class="btn" onclick="exportFindings()">⇩ Export temuan</button> <button class="btn primary" onclick="openFindingModal()">＋ Tambah temuan</button></div>
+        </div>
+        <div class="panel">
+          <div class="toolbar"><input class="search" id="findingSearch" placeholder="Cari SKU, nama barang, lokasi, atau catatan…" oninput="renderFindings()"></div>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>TANGGAL</th><th>KODE BARANG</th><th>NAMA BARANG</th><th>LOKASI</th><th>SATUAN</th><th>QTY TEMUAN</th><th>CATATAN</th><th>PENGGUNA</th><th>AKSI</th></tr></thead>
+              <tbody id="findingsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">Warehouse Stock Prototype v0.7 · Data awal kosong · Untuk simulasi, bukan database produksi</div>
+    </div>
+  </main>
+</div>
+<div id="modalRoot"></div><div id="toastRoot"></div>
+<script>
+let state={items:[],opnames:[],findings:[],logs:[],staged:[],currentPage:'dashboard'};
+function load(){try{const s=JSON.parse(localStorage.getItem('warehouseStockProtoV2'));if(s&&Array.isArray(s.items)){state={...state,...s,findings:Array.isArray(s.findings)?s.findings:[]};return}}catch(e){}state={items:[],opnames:[],findings:[],logs:[],staged:[],currentPage:'dashboard'};log('Inisialisasi','Workspace baru dibuat dengan data kosong',user());save()}
+function save(){try{localStorage.setItem('warehouseStockProtoV2',JSON.stringify(state))}catch(e){}}
+function user(){return document.getElementById('userSelect')?.value||'Pengguna 1'}function now(){return new Date().toLocaleString('id-ID',{dateStyle:'short',timeStyle:'short'})}function log(action,detail,by=user()){state.logs.unshift({time:now(),action,detail,user:by});state.logs=state.logs.slice(0,300);save()}function toast(msg){const root=document.getElementById('toastRoot');root.innerHTML='<div class="toast">'+esc(msg)+'</div>';setTimeout(()=>root.innerHTML='',2600)}function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function fmt(n){return Number(n||0).toLocaleString('id-ID')}
+const pageNames={dashboard:'Dashboard',items:'Master Barang',import:'Import Excel',opname:'Stok Opname',reports:'Laporan & Riwayat',findings:'Temuan'};
+function showPage(p){state.currentPage=p;document.querySelectorAll('.page').forEach(e=>e.classList.add('hidden'));document.getElementById('page-'+p).classList.remove('hidden');document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===p));document.getElementById('crumb').textContent=pageNames[p];renderAll()}
+document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('button[data-page]');if(b)showPage(b.dataset.page)});document.getElementById('userSelect').addEventListener('change',()=>{document.getElementById('avatar').textContent=user().slice(0,1);toast('Pengguna aktif: '+user())});
+function renderAll(){renderDashboard();renderItems();renderOpname();renderLogs();renderFindings()}
+function renderDashboard(){const total=state.items.reduce((s,i)=>s+Number(i.stock||0),0),low=state.items.filter(i=>Number(i.stock)<=15).length,pending=state.opnames.filter(o=>o.status==='pending').length;document.getElementById('stats').innerHTML=[['Total SKU',fmt(state.items.length),'Master barang','▤'],['Total unit stok',fmt(total),'Akumulasi stok sistem','▦'],['Stok rendah / kosong',fmt(low),'Batas demo: ≤ 15 unit','⚑'],['Opname menunggu',fmt(pending),'Perlu ditinjau','☷']].map(x=>`<div class="stat"><div class="stat-top"><span>${x[1]==='x'?'':x[0]}</span><span class="stat-icon">${x[3]}</span></div><div class="stat-num">${x[1]}</div><div class="stat-note">${x[2]}</div></div>`).join('');document.getElementById('dashItems').innerHTML=state.items.slice(0,6).map(i=>`<tr><td><div class="sku">${esc(i.sku)}</div><div class="muted">${esc(i.name)}</div></td><td>${esc(i.location||'—')}</td><td><b>${fmt(i.stock)}</b> ${esc(i.unit||'')}</td><td>${Number(i.stock)<=15?'<span class="pill amber">Stok rendah</span>':'<span class="pill green">Tersedia</span>'}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">Belum ada barang. Import Excel atau tambah barang.</td></tr>';document.getElementById('dashActivity').innerHTML=state.logs.slice(0,5).map(l=>`<div class="activity"><div class="dot"></div><div><strong>${esc(l.action)}</strong><p>${esc(l.detail)}</p><p>${esc(l.time)} · ${esc(l.user)}</p></div></div>`).join('')||'<div class="empty">Belum ada aktivitas</div>';document.getElementById('opStats').innerHTML=''}
+function renderItems(){const q=(document.getElementById('itemSearch')?.value||'').toLowerCase(),arr=state.items.filter(i=>(i.sku+' '+i.name+' '+i.location).toLowerCase().includes(q));const body=document.getElementById('itemsBody');if(!body)return;body.innerHTML=arr.map(i=>`<tr><td class="sku">${esc(i.sku)}</td><td><b>${esc(i.name)}</b></td><td>${esc(i.location||'—')}</td><td>${esc(i.unit||'—')}</td><td><b>${fmt(i.stock)}</b></td><td><button class="btn small" onclick="openItemModal('${encodeURIComponent(i.sku)}')">Edit</button> <button class="btn small danger" onclick="deleteItem('${encodeURIComponent(i.sku)}')">Hapus</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">Barang tidak ditemukan.</td></tr>';document.getElementById('itemsCount').textContent=`Menampilkan ${arr.length} dari ${state.items.length} SKU`}
+function openItemModal(encoded=''){const sku=decodeURIComponent(encoded),item=state.items.find(i=>i.sku===sku)||{sku:'',name:'',location:'',unit:'PCS',stock:0},edit=!!sku;document.getElementById('modalRoot').innerHTML=`<div class="modalback" onclick="if(event.target===this)closeModal()"><div class="modal"><h2>${edit?'Edit barang':'Tambah barang'}</h2><div class="formgrid"><div class="field"><label>SKU / Kode barang *</label><input id="mSku" value="${esc(item.sku)}" ${edit?'readonly':''}></div><div class="field"><label>Nama barang *</label><input id="mName" value="${esc(item.name)}"></div><div class="field"><label>Lokasi rak</label><input id="mLoc" value="${esc(item.location)}"></div><div class="field"><label>Satuan</label><input id="mUnit" value="${esc(item.unit)}"></div>${edit?'':'<div class="field span2"><label>Stok awal</label><input id="mStock" type="number" min="0" value="0"></div>'}</div><div class="modalactions"><button class="btn" onclick="closeModal()">Batal</button><button class="btn primary" onclick="saveItem('${encodeURIComponent(item.sku)}')">Simpan</button></div></div></div>`}
+function closeModal(){document.getElementById('modalRoot').innerHTML=''}function saveItem(oldEnc){const old=decodeURIComponent(oldEnc),sku=document.getElementById('mSku').value.trim(),name=document.getElementById('mName').value.trim(),location=document.getElementById('mLoc').value.trim(),unit=document.getElementById('mUnit').value.trim()||'PCS';if(!sku||!name)return toast('SKU dan nama barang wajib diisi.');let item=state.items.find(i=>i.sku===old);if(!item&&state.items.some(i=>i.sku.toLowerCase()===sku.toLowerCase()))return toast('SKU sudah digunakan.');if(item){Object.assign(item,{name,location,unit})}else{const stock=Number(document.getElementById('mStock').value||0);if(stock<0)return toast('Stok tidak boleh negatif.');state.items.push({sku,name,location,unit,stock});log('Tambah barang',`${sku} — ${name}, stok ${stock}`)}if(item)log('Edit master barang',`${sku} — ${name}`);save();closeModal();renderAll();toast('Data barang tersimpan')}
+function deleteItem(enc){const sku=decodeURIComponent(enc);if(!confirm(`Hapus ${sku}? Riwayat opname tetap tersimpan.`))return;state.items=state.items.filter(i=>i.sku!==sku);log('Hapus barang',sku);save();renderAll();toast('Barang dihapus')}
+function deleteAllItems(){if(!state.items.length)return toast('Master barang sudah kosong.');if(!confirm(`Hapus SEMUA ${state.items.length} data master barang? Tindakan ini tidak dapat dibatalkan. Riwayat opname tidak ikut dihapus.`))return;if(!confirm('Konfirmasi terakhir: semua master barang dan saldo sistem akan dihapus. Lanjutkan?'))return;const count=state.items.length;state.items=[];log('Hapus semua master barang',`${count} data barang dihapus; riwayat opname tetap tersimpan.`);save();renderAll();toast(`Semua ${count} master barang dihapus`)}
+function downloadTemplate(){downloadText('template_stok_awal.csv','SKU,Nama Barang,Lokasi,Satuan,Stok Awal\nBRG001,Baut M8,Rak A01,PCS,100\nBRG002,Mur M8,Rak A02,PCS,250\n','text/csv;charset=utf-8')}
+function downloadCSV(){downloadText('master_barang.csv','SKU,Nama Barang,Lokasi,Satuan,Stok Sistem\n'+state.items.map(i=>[i.sku,i.name,i.location,i.unit,i.stock].map(csvq).join(',')).join('\n'),'text/csv;charset=utf-8')}
+function downloadLogs(){downloadText('riwayat_warehouse.csv','Waktu,Aktivitas,Detail,Pengguna\n'+state.logs.map(l=>[l.time,l.action,l.detail,l.user].map(csvq).join(',')).join('\n'),'text/csv;charset=utf-8')}
+function downloadText(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff',text],{type}));a.download=name;a.click();URL.revokeObjectURL(a.href)}function csvq(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}
+let staged=[];document.getElementById('importFile').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{let rows;if(file.name.toLowerCase().endsWith('.csv')){const text=await file.text();rows=parseCSV(text)}else{if(!window.XLSX)throw new Error('Pustaka Excel belum termuat. Periksa koneksi internet atau gunakan CSV.');const buf=await file.arrayBuffer(),wb=XLSX.read(buf,{type:'array'});rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''})}staged=normalizeRows(rows);renderPreview(file.name);document.getElementById('processImport').disabled=staged.length===0;document.getElementById('importMessage').innerHTML=`<div class="success">${staged.length} baris terbaca. Periksa pratinjau sebelum import.</div>`}catch(err){staged=[];document.getElementById('processImport').disabled=true;document.getElementById('importMessage').innerHTML=`<div class="note">Gagal membaca file: ${esc(err.message)}</div>`}});
+function parseCSV(text){const lines=text.replace(/^\ufeff/,'').split(/\r?\n/).filter(x=>x.trim());if(!lines.length)return [];const parseLine=line=>{let out=[],v='',q=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'&&q&&line[i+1]==='"'){v+='"';i++}else if(c==='"')q=!q;else if(c===','&&!q){out.push(v);v=''}else v+=c}out.push(v);return out};const headers=parseLine(lines[0]).map(h=>h.trim());return lines.slice(1).map(l=>{const vals=parseLine(l),o={};headers.forEach((h,i)=>o[h]=vals[i]??'');return o})}
+function normalizeRows(rows){return rows.map((r,idx)=>{const get=(names)=>{const key=Object.keys(r).find(k=>names.includes(k.toLowerCase().trim().replace(/[_-]/g,' ')));return key===undefined?'':r[key]};const sku=String(get(['sku','kode barang','kode','item code','itemcode'])).trim(),name=String(get(['nama barang','nama','item name','description','barang'])).trim(),loc=String(get(['lokasi','lokasi rak','location','bin'])).trim(),unit=String(get(['satuan','unit','uom'])).trim()||'PCS',raw=String(get(['stok awal','stok sistem','stok','qty','quantity','on hand','stock'])).trim().replace(/\.(?=\d{3}(\D|$))/g,'').replace(',','.');const stock=Number(raw);return {sku,name,location:loc,unit,stock,row:idx+2,valid:!!sku&&!!name&&raw!==''&&Number.isFinite(stock)&&stock>=0,error:!sku?'SKU kosong':!name?'Nama barang kosong':raw===''?'Stok kosong':!Number.isFinite(stock)?'Format stok tidak valid':stock<0?'Stok negatif':''}})}
+function renderPreview(file){const area=document.getElementById('previewArea');const dup=new Set();staged.forEach(r=>{const k=r.sku.toLowerCase();if(k&&dup.has(k)){r.valid=false;r.error='SKU duplikat di file'}dup.add(k)});const good=staged.filter(r=>r.valid).length,bad=staged.length-good;area.innerHTML=`<div class="panelhead"><div><h3>Pratinjau: ${esc(file)}</h3><p>${good} valid · ${bad} perlu diperbaiki</p></div><span class="pill ${bad?'amber':'green'}">${bad?'Perlu pemeriksaan':'Siap'}</span></div><div class="tablewrap"><table><thead><tr><th>BARIS</th><th>SKU</th><th>NAMA</th><th>STOK</th><th>VALIDASI</th></tr></thead><tbody>${staged.slice(0,10).map(r=>`<tr><td>${r.row}</td><td>${esc(r.sku||'—')}</td><td>${esc(r.name||'—')}</td><td>${esc(r.stock)}</td><td>${r.valid?'<span class="pill green">Valid</span>':`<span class="pill red">${esc(r.error)}</span>`}</td></tr>`).join('')}</tbody></table></div>${staged.length>10?`<p class="footnote">Menampilkan 10 dari ${staged.length} baris.</p>`:''}`}
+function commitImport(){if(!staged.length)return;const mode=document.getElementById('importMode').value,valid=staged.filter(r=>r.valid);let added=0,updated=0,skipped=0;for(const r of valid){const old=state.items.find(i=>i.sku.toLowerCase()===r.sku.toLowerCase());if(old){if(mode==='replace'){Object.assign(old,{name:r.name,location:r.location,unit:r.unit,stock:r.stock});updated++}else skipped++}else{state.items.push({sku:r.sku,name:r.name,location:r.location,unit:r.unit,stock:r.stock});added++}}log('Import data Excel',`Valid ${valid.length}; tambah ${added}; perbarui ${updated}; lewati ${skipped}; gagal ${staged.length-valid.length}`);save();document.getElementById('importMessage').innerHTML=`<div class="success">Import selesai: ${added} barang ditambahkan, ${updated} diperbarui, ${skipped} dilewati, ${staged.length-valid.length} baris gagal validasi.</div>`;toast('Import selesai');renderAll()}
+function startOpname(){document.getElementById('modalRoot').innerHTML=`<div class="modalback" onclick="if(event.target===this)closeModal()"><div class="modal"><h2>Input stok opname</h2><div class="formgrid"><div class="field"><label>Kode barang / SKU *</label><input id="oSku" placeholder="Ketik kode barang" list="opSkuList" oninput="fillOpItem()"><datalist id="opSkuList">${state.items.map(i=>`<option value="${esc(i.sku)}">${esc(i.name)} — ${esc(i.location)}</option>`).join('')}</datalist></div><div class="field"><label>Nama barang *</label><input id="oName" placeholder="Ketik nama barang"></div><div class="field"><label>Lokasi fisik / rak *</label><input id="oLoc" placeholder="Contoh: Rak A-01"></div><div class="field"><label>Satuan</label><input id="oUnit" value="PCS"></div><div class="field span2"><label>Jumlah fisik hasil hitung *</label><input id="oPhysical" type="number" min="0" step="any" placeholder="Masukkan hasil hitung"></div></div><div class="field"><label>Catatan / alasan selisih</label><textarea id="oNote" placeholder="Contoh: hitung ulang, barang rusak, salah picking…"></textarea></div><div class="note">Kode barang dan nama diketik manual. SKU yang sama di lokasi berbeda diperbolehkan sebagai baris opname terpisah. Jika kombinasi SKU + lokasi belum ada di master, stok sistem awalnya 0 dan barang/lokasi baru dibuat setelah disetujui.</div><div class="modalactions"><button class="btn" onclick="closeModal()">Batal</button><button class="btn primary" onclick="saveOpname()">Simpan hitungan</button></div></div></div>`}
+function fillOpItem(){const sku=document.getElementById('oSku').value.trim().toLowerCase();const item=state.items.find(i=>i.sku.toLowerCase()===sku);if(item){document.getElementById('oName').value=item.name;document.getElementById('oUnit').value=item.unit||'PCS';if(!document.getElementById('oLoc').value)document.getElementById('oLoc').value=item.location||''}}
+function saveOpname(){const sku=document.getElementById('oSku').value.trim(),name=document.getElementById('oName').value.trim(),location=document.getElementById('oLoc').value.trim(),unit=document.getElementById('oUnit').value.trim()||'PCS',physical=Number(document.getElementById('oPhysical').value),note=document.getElementById('oNote').value.trim();if(!sku||!name||!location)return toast('Kode barang, nama, dan lokasi wajib diisi.');if(document.getElementById('oPhysical').value===''||!Number.isFinite(physical)||physical<0)return toast('Jumlah fisik harus angka nol atau lebih.');const item=state.items.find(i=>i.sku.toLowerCase()===sku.toLowerCase()&&String(i.location||'').toLowerCase()===location.toLowerCase());const sameSku=state.items.find(i=>i.sku.toLowerCase()===sku.toLowerCase());const existing=state.opnames.find(o=>o.status==='pending'&&o.sku.toLowerCase()===sku.toLowerCase()&&String(o.location||'').toLowerCase()===location.toLowerCase());if(existing){existing.physical=Number(existing.physical)+physical;existing.diff=existing.physical-Number(existing.system);existing.note=[existing.note,note,'Qty temuan digabung ke hitungan awal'].filter(Boolean).join(' | ');log('Tambah qty ke hitungan opname',`${existing.id}: ${sku} @ ${location}; qty tambahan ${physical}; total fisik ${existing.physical}, selisih ${existing.diff}`);save();closeModal();renderAll();toast(`Qty ditambahkan ke hitungan awal ${existing.id}`);return}const op={id:'OP-'+Date.now().toString().slice(-7),time:now(),sku,name,location,unit,system:item?Number(item.stock):0,physical,diff:physical-(item?Number(item.stock):0),newLocation:!item,systemItemId:item?item.sku+'|'+(item.location||''):'',note,createdBy:user(),status:'pending',approvedBy:'',approvedAt:''};if(sameSku&&!item)op.note=(op.note?op.note+' | ':'')+'SKU sama di lokasi berbeda; stok sistem lokasi ini diasumsikan 0.';state.opnames.unshift(op);log('Input stok opname',`${op.id}: ${sku} @ ${location}, sistem ${op.system}, fisik ${physical}, selisih ${op.diff}`);save();closeModal();renderAll();toast('Hitungan tersimpan, menunggu persetujuan')}
+function renderOpname(){const body=document.getElementById('opBody');if(!body)return;const pending=state.opnames.filter(o=>o.status==='pending').length,approved=state.opnames.filter(o=>o.status==='approved').length,diffs=state.opnames.filter(o=>o.status!=='draft'&&o.diff!==0).length;document.getElementById('opStats').innerHTML=[['Menunggu persetujuan',pending,'amber'],['Sudah disetujui',approved,'green'],['Hitungan berselisih',diffs,'red'],['Total sesi',state.opnames.length,'']].map(a=>`<div class="stat"><div class="stat-top">${a[0]}<span class="pill ${a[2]}">${a[2]||'Opname'}</span></div><div class="stat-num">${fmt(a[1])}</div><div class="stat-note">Seluruh riwayat opname</div></div>`).join('');const filter=document.getElementById('opFilter')?.value||'all',groupFilter=document.getElementById('opGroupFilter')?.value||'all',q=(document.getElementById('opSearch')?.value||'').trim().toLowerCase(),arr=state.opnames.filter(o=>(filter==='all'||o.status===filter)&&(groupFilter==='all'||(o.group||'')===groupFilter)&&[o.id,o.time,o.sku,o.name,o.location,o.unit,o.status,o.createdBy,o.group].join(' ').toLowerCase().includes(q));body.innerHTML=arr.map(o=>`<tr><td><b>${esc(o.id)}</b><div class="muted">${esc(o.time)}</div></td><td><span class="sku">${esc(o.sku)}</span><div>${esc(o.name)}</div></td><td>${esc(o.location||'—')}<div class="muted">${esc(o.group||'Belum dipilih')}</div></td><td>${fmt(o.system)}</td><td>${fmt(o.physical)}</td><td class="${o.diff>0?'diffpos':o.diff<0?'diffneg':''}">${o.diff>0?'+':''}${fmt(o.diff)}</td><td>${o.status==='approved'?'<span class="pill green">Disetujui</span>':o.status==='pending'?'<span class="pill amber">Menunggu</span>':'<span class="pill">Draft</span>'}<div class="muted">${esc(o.createdBy)}</div></td><td><div>${esc(o.note||'—')}</div><button class="btn small" onclick="editOpNote('${o.id}')">${o.note?'Edit catatan':'＋ Catatan'}</button></td><td>${o.status==='pending'?`<button class="btn small primary" onclick="approveOp('${o.id}')">Setujui</button> <button class="btn small" onclick="rejectOp('${o.id}')">Tolak</button>`:`<button class="btn small" onclick="editOp('${o.id}')">Edit</button> <button class="btn small" onclick="detailOp('${o.id}')">Detail</button>`} <button class="btn small danger" onclick="deleteOp('${o.id}')">Hapus</button></td></tr>`).join('')||'<tr><td colspan="9" class="empty">Belum ada hitungan. Klik “Sesi opname baru”.</td></tr>'}
+function editOp(id){const o=state.opnames.find(x=>x.id===id);if(!o)return;const groups=['Overhoul','GD 1','GD 2','GD 3'];document.getElementById('modalRoot').innerHTML=`<div class="modalback" onclick="if(event.target===this)closeModal()"><div class="modal"><h2>Edit hasil penghitungan</h2><p class="sub">Pilih area untuk pengelompokan dan filter daftar.</p><div class="formgrid"><div class="field span2"><label>Area / Kelompok *</label><select id="eGroup">${groups.map(g=>`<option value="${g}" ${o.group===g?'selected':''}>${g}</option>`).join('')}</select></div><div class="field span2"><label>Catatan</label><textarea id="eNote">${esc(o.note||'')}</textarea></div></div><div class="modalactions"><button class="btn" onclick="closeModal()">Batal</button><button class="btn primary" onclick="saveOpEdit('${o.id}')">Simpan</button></div></div></div>`}function saveOpEdit(id){const o=state.opnames.find(x=>x.id===id);if(!o)return;const group=document.getElementById('eGroup').value,note=document.getElementById('eNote').value.trim();o.group=group;o.note=note;log('Edit hasil penghitungan',`${o.id}: area ${group}; catatan diperbarui`);save();closeModal();renderAll();toast('Perubahan penghitungan disimpan')}
+function approveOp(id){const o=state.opnames.find(x=>x.id===id);if(!o||o.status!=='pending')return;if(user()===o.createdBy)return toast('Persetujuan ditolak: harus disetujui pengguna yang berbeda dari penghitung. Ganti Pengguna Aktif ke pengguna kedua.');let item=state.items.find(i=>i.sku.toLowerCase()===o.sku.toLowerCase()&&String(i.location||'').toLowerCase()===String(o.location||'').toLowerCase());if(!item&&o.system===0){if(!confirm(`SKU ${o.sku} di lokasi ${o.location} belum ada di master. Buat lokasi/barang ini dengan stok fisik ${o.physical} setelah persetujuan?`))return;item={sku:o.sku,name:o.name,location:o.location,unit:o.unit||'PCS',stock:0};}else if(!item)return toast('Barang/lokasi tidak ditemukan.');if(Number(item.stock)!==Number(o.system))return toast('Stok sistem berubah sejak penghitungan. Buat hitungan ulang sebelum persetujuan.');if(!confirm(`Setujui penyesuaian ${o.sku} @ ${o.location}? Stok saat ini ${item.stock}, hasil hitung fisik ${o.physical}. Persetujuan dicatat atas nama ${user()}.`))return;const previous=item.stock;if(!state.items.includes(item))state.items.push(item);item.stock=o.physical;o.status='approved';o.approvedBy=user();o.approvedAt=now();log('Persetujuan penyesuaian',`${o.id} ${o.sku} @ ${o.location}: stok ${previous} → ${item.stock}; selisih ${o.diff}`,user());save();renderAll();toast('Penyesuaian stok disetujui')}
+function rejectOp(id){const o=state.opnames.find(x=>x.id===id);if(!o||o.status!=='pending')return;const reason=prompt('Alasan penolakan (wajib):');if(!reason||!reason.trim())return;o.status='rejected';o.note+=(o.note?' | ':'')+'Ditolak: '+reason.trim();log('Opname ditolak',`${o.id} ${o.sku}: ${reason.trim()}`);save();renderAll();toast('Hitungan ditolak')}
+function editOpNote(id){const o=state.opnames.find(x=>x.id===id);if(!o)return;const note=prompt('Masukkan catatan untuk hasil opname:',o.note||'');if(note===null)return;o.note=note.trim();log('Perbarui catatan opname',`${o.id} ${o.sku}: ${o.note||'(catatan dikosongkan)'}`);save();renderAll();toast('Catatan opname disimpan')}
+function exportOpname(){const rows=state.opnames.filter(o=>o.status==='approved');const header=['ID Opname','Tanggal','Kode barang','Nama Barang','Lokasi','Satuan','Stok sistem','Stok fisik','Selisih','Catatan'];const data=rows.map(o=>[o.id,o.time,o.sku,o.name,o.location||'',o.unit||'PCS',Number(o.system),Number(o.physical),Number(o.diff),o.note||'']);if(window.XLSX){const ws=XLSX.utils.aoa_to_sheet([header,...data]);ws['!cols']=[{wch:16},{wch:20},{wch:20},{wch:34},{wch:22},{wch:12},{wch:14},{wch:14},{wch:12},{wch:40}];ws['!autofilter']={ref:ws['!ref']};ws['!freeze']={xSplit:0,ySplit:1,topLeftCell:'A2',activePane:'bottomLeft',state:'frozen'};const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Hasil Opname');XLSX.writeFile(wb,'hasil_stok_opname.xlsx');}else{downloadText('hasil_stok_opname.tsv',[header,...data].map(r=>r.map(v=>String(v??'').replace(/[\t\r\n]/g,' ')).join('\t')).join('\n'),'text/tab-separated-values;charset=utf-8');toast('Pustaka Excel tidak tersedia; file TSV dipisahkan dengan tab agar setiap nilai masuk ke kolom Excel yang terpisah.');return}toast(`Export ${rows.length} hasil opname yang disetujui ke Excel`)}
+function deleteOp(id){const o=state.opnames.find(x=>x.id===id);if(!o)return;if(o.status==='approved'){toast('Hasil yang sudah disetujui tidak dapat dihapus karena stok sistem sudah berubah. Buat opname koreksi agar jejak audit tetap terjaga.');return}if(!confirm(`Hapus hitungan ${o.id} untuk SKU ${o.sku} di lokasi ${o.location}? Tindakan ini tidak dapat dibatalkan.`))return;state.opnames=state.opnames.filter(x=>x.id!==id);log('Hapus hitungan opname',`${o.id}: ${o.sku} @ ${o.location}; fisik ${o.physical}`);save();renderAll();toast('Hitungan opname dihapus')}
+function deleteAllOpnames(){if(!state.opnames.length)return toast('Daftar stok opname sudah kosong.');const approved=state.opnames.filter(o=>o.status==='approved').length;const msg=`Hapus SEMUA ${state.opnames.length} catatan stok opname (termasuk ${approved} yang sudah disetujui)? Catatan audit akan hilang, tetapi saldo stok di Master Barang TIDAK berubah. Export hasil opname terlebih dahulu jika ingin menyimpan laporan.`;if(!confirm(msg))return;if(!confirm('Konfirmasi terakhir: hapus seluruh catatan stok opname sekarang?'))return;const count=state.opnames.length;state.opnames=[];log('Hapus semua catatan stok opname',`${count} catatan dihapus; saldo master barang tidak berubah.`);save();renderAll();toast(`Semua ${count} catatan opname dihapus`)}
+function detailOp(id){const o=state.opnames.find(x=>x.id===id);if(!o)return;alert(`Sesi: ${o.id}\nSKU: ${o.sku} — ${o.name}\nLokasi: ${o.location||'-'}\nStok sistem saat hitung: ${o.system}\nStok fisik: ${o.physical}\nSelisih: ${o.diff}\nCatatan: ${o.note||'-'}\nDihitung oleh: ${o.createdBy}\nStatus: ${o.status}\nDisetujui oleh: ${o.approvedBy||'-'}\nWaktu persetujuan: ${o.approvedAt||'-'}`)}
+function openFindingModal(){document.getElementById('modalRoot').innerHTML=`<div class="modalback" onclick="if(event.target===this)closeModal()"><div class="modal"><h2>Tambah temuan barang</h2><p class="sub" style="margin-bottom:16px">Untuk barang yang ditemukan secara fisik tetapi belum ada di stok sistem.</p><div class="formgrid"><div class="field"><label>Kode barang / SKU *</label><input id="fSku" placeholder="Ketik kode part"></div><div class="field"><label>Nama barang *</label><input id="fName" placeholder="Ketik nama barang"></div><div class="field"><label>Lokasi *</label><input id="fLoc" placeholder="Contoh: Rak A-01"></div><div class="field"><label>Satuan</label><input id="fUnit" value="PCS"></div><div class="field span2"><label>Qty temuan *</label><input id="fQty" type="number" min="0" step="any" placeholder="Jumlah barang ditemukan"></div></div><div class="field"><label>Catatan</label><textarea id="fNote" placeholder="Contoh: tidak ada di master stok, ditemukan saat pemeriksaan…"></textarea></div><div class="modalactions"><button class="btn" onclick="closeModal()">Batal</button><button class="btn primary" onclick="saveFinding()">Simpan temuan</button></div></div></div>`}function saveFinding(){const sku=document.getElementById('fSku').value.trim(),name=document.getElementById('fName').value.trim(),location=document.getElementById('fLoc').value.trim(),unit=document.getElementById('fUnit').value.trim()||'PCS',qty=Number(document.getElementById('fQty').value),note=document.getElementById('fNote').value.trim();if(!sku||!name||!location)return toast('Kode barang, nama barang, dan lokasi wajib diisi.');if(document.getElementById('fQty').value===''||!Number.isFinite(qty)||qty<0)return toast('Qty temuan harus angka nol atau lebih.');const existing=state.findings.find(f=>f.sku.toLowerCase()===sku.toLowerCase()&&f.location.toLowerCase()===location.toLowerCase());if(existing){existing.qty=Number(existing.qty)+qty;existing.note=[existing.note,note,'Qty temuan digabung'].filter(Boolean).join(' | ');existing.updatedAt=now();log('Tambah qty temuan',`${sku} @ ${location}; tambahan ${qty}; total ${existing.qty}`)}else{state.findings.unshift({id:'TM-'+Date.now().toString().slice(-7),time:now(),sku,name,location,unit,qty,note,createdBy:user()});log('Simpan temuan barang',`${sku} ${name} @ ${location}; qty ${qty}`)}save();closeModal();renderAll();toast('Temuan berhasil disimpan')}function renderFindings(){const body=document.getElementById('findingsBody');if(!body)return;const q=(document.getElementById('findingSearch')?.value||'').toLowerCase();const rows=(state.findings||[]).filter(f=>[f.id,f.time,f.sku,f.name,f.location,f.unit,f.note,f.createdBy].join(' ').toLowerCase().includes(q));body.innerHTML=rows.map(f=>`<tr><td>${esc(f.time)}</td><td><b class="sku">${esc(f.sku)}</b></td><td>${esc(f.name)}</td><td>${esc(f.location)}</td><td>${esc(f.unit)}</td><td><b>${fmt(f.qty)}</b></td><td>${esc(f.note||'—')}</td><td>${esc(f.createdBy)}</td><td><button class="btn small danger" onclick="deleteFinding('${f.id}')">Hapus</button></td></tr>`).join('')||'<tr><td colspan="9" class="empty">Belum ada temuan. Klik “Tambah temuan” untuk menyimpan barang di luar stok.</td></tr>'}function deleteFinding(id){const f=state.findings.find(x=>x.id===id);if(!f)return;if(!confirm(`Hapus temuan ${f.sku} @ ${f.location}?`))return;state.findings=state.findings.filter(x=>x.id!==id);log('Hapus temuan barang',`${f.sku} @ ${f.location}`);save();renderAll();toast('Temuan dihapus')}function exportFindings(){const rows=state.findings||[];const header=['ID Temuan','Tanggal','Kode barang','Nama Barang','Lokasi','Satuan','Qty Temuan','Catatan','Pengguna'];const data=rows.map(f=>[f.id,f.time,f.sku,f.name,f.location,f.unit,f.qty,f.note||'',f.createdBy]);if(XLSX){const ws=XLSX.utils.aoa_to_sheet([header,...data]);ws['!cols']=[{wch:16},{wch:20},{wch:20},{wch:34},{wch:22},{wch:12},{wch:14},{wch:36},{wch:18}];ws['!autofilter']={ref:ws['!ref']};const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Temuan');XLSX.writeFile(wb,'daftar_temuan.xlsx')}else downloadText('daftar_temuan.tsv',[header,...data].map(r=>r.map(v=>String(v??'').replace(/[\t\r\n]/g,' ')).join('\t')).join('\n'),'text/tab-separated-values;charset=utf-8');toast(`Export ${rows.length} temuan`) }
+function renderLogs(){const body=document.getElementById('logsBody');if(!body)return;const q=(document.getElementById('logSearch')?.value||'').toLowerCase(),arr=state.logs.filter(l=>(l.time+' '+l.action+' '+l.detail+' '+l.user).toLowerCase().includes(q));body.innerHTML=arr.map(l=>`<tr><td>${esc(l.time)}</td><td><b>${esc(l.action)}</b></td><td>${esc(l.detail)}</td><td>${esc(l.user)}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">Belum ada riwayat.</td></tr>'}
+load();renderAll();
+</script></body></html>
